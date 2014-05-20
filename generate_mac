@@ -1,0 +1,33 @@
+#!/bin/sh
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+	echo "$0 TARGET_DIR TARGET_NAME"
+	exit
+fi
+
+target_dir=$1
+target_name=$2
+target_source_dir=$1/$2
+
+# make target source directory
+mkdir $target_source_dir
+
+# move default files to source directory
+cp -r mac/defaults/* $target_source_dir
+cp mac/default.gyp $target_dir
+
+cd $target_source_dir
+
+# change file name
+mv default-Prefix.pch $target_name-Prefix.pch
+mv default-Info.plist $target_name-Info.plist
+sed "s/#TARGETNAME#/$target_name/g" Base.lproj/default-MainMenu.xib > Base.lproj/MainMenu.xib
+rm Base.lproj/default-MainMenu.xib
+
+cd ..
+
+# change gyp
+sed "s/#TARGETNAME#/$target_name/g" default.gyp > $target_name.gyp
+rm default.gyp
+
+
