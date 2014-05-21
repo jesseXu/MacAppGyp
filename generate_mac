@@ -13,8 +13,9 @@ target_source_dir=$1/$2
 mkdir $target_source_dir
 
 # move default files to source directory
-cp -r mac/defaults/* $target_source_dir
-cp mac/default.gyp $target_dir
+shell_path="`dirname \"$0\"`" 
+cp -r $shell_path/mac/defaults/* $target_source_dir
+cp $shell_path/mac/default.gyp $target_dir
 
 cd $target_source_dir
 
